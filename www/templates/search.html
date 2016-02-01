@@ -1,0 +1,36 @@
+<ion-view title="Search">
+    <ion-content overflow-scroll="true" padding="true" class="has-header">
+        <form class="list">
+            <label class="item item-input">
+                <input type="text" placeholder="Song or Artist" ng-model="query" ng-keyup="$event.keyCode == 13 && searchSongs(query)">
+            </label>
+        </form>        
+        <div class="spacer" style="width: 283px; height: 38px;"></div>
+
+        <ion-item class="item-divider">Results</ion-item>
+        <ion-list ng-repeat="song in SharedData.searchSongList">            
+            <ion-item class="item-thumbnail-left" ng-click="addSong(song)">
+                <img src="{{song.thumb}}">
+                <h2>{{song.name}}</h2>
+                <p>{{song.artist}}</p>
+            </ion-item>
+            
+            <!-- Replace duplicated block for a loop
+            <ion-item class="item-thumbnail-left">
+                <img>
+                <h2>Song Name</h2>
+                <p>Artist</p>
+            </ion-item>
+            <ion-item class="item-thumbnail-left">
+                <img>
+                <h2>Song Name</h2>
+                <p>Artist</p>
+            </ion-item>
+            <ion-item class="item-thumbnail-left">
+                <img>
+                <h2>Song Name</h2>
+                <p>Artist</p>
+            </ion-item>-->
+        </ion-list>
+    </ion-content>
+</ion-view>
