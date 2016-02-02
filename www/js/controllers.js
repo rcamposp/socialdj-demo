@@ -1,10 +1,5 @@
 angular.module('app.controllers', [])
 
-.factory('info',function(){
-	var info = {};
-
-	return info;
-})
   
 .controller('playlistCtrl', function($scope, SharedData) {	
 	$scope.SharedData = SharedData;
