@@ -1,19 +1,25 @@
 angular.module('app.controllers', [])
 
-.factory('info',function(){
-	var info = {};
-
-	return info;
-})
   
-.controller('playlistCtrl', function($scope, SharedData) {	
+.controller('playlistCtrl', ['$scope', 'SharedData', '$firebaseArray', '$firebaseObject', function($scope, SharedData, $firebaseArray, $firebaseObject) {	
 	$scope.SharedData = SharedData;
-})
+	var ref = new Firebase("https://socialdj-demo.firebaseio.com/songList");
+	$scope.SharedData.songList = $firebaseArray(ref);	
+
+	$scope.deleteSong = function(song){				
+		item = $scope.SharedData.songList.$getRecord(song.$id);		
+		$scope.SharedData.songList.$remove(item).then(function(ref) {
+		  console.log("Song deleted");
+		});
+	}
+}])
       
-.controller('searchCtrl', ['$scope', '$http', 'SharedData', function($scope, $http, SharedData) {		
+.controller('searchCtrl', ['$scope', '$http', 'SharedData', '$firebaseArray', '$firebaseObject',  function($scope, $http, SharedData, $firebaseArray, $firebaseObject) {		
 	$scope.SharedData = SharedData;
-	$scope.SharedData.searchSongList = [];
-	$scope.SharedData.songList = [];
+	$scope.SharedData.searchSongList = [];		
+
+	var ref = new Firebase("https://socialdj-demo.firebaseio.com/songList");
+	$scope.SharedData.songList = $firebaseArray(ref);
 	
 	$scope.searchSongs = function(query){		
 		$scope.SharedData.searchSongList = [];
@@ -24,8 +30,7 @@ angular.module('app.controllers', [])
 		    	$scope.SharedData.searchSongList.push({		    		
 		    		name		: data[i].title,
 		    		artist		: data[i].artist.name,
-		    		thumb 		: data[i].album.cover_medium,
-		    		votes 		: 1,
+		    		thumb 		: data[i].album.cover_medium,		    		
 		    		playerid	: data[i].id,		    		
 		    	});
 		    }		    		   		    
@@ -36,8 +41,9 @@ angular.module('app.controllers', [])
 	};
 
 	$scope.addSong = function(song){
-		$scope.SharedData.songList.push(song);
-	}
+    	$scope.SharedData.songList.$add(song);
+    	console.log("Song added");	        									  				        
+	}	
 
 }])
    
